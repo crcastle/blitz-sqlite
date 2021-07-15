@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: blitz-sqlite
+    env: node
+    plan: starter
+    buildCommand: yarn --frozen-lockfile --prod=false && blitz build
+    startCommand: blitz prisma migrate deploy && blitz start
+    disk:
+      name: blitz-sqlite-data
+      mountPath: /opt/render/project/src/db/sqlite
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: file:./sqlite/db.sqlite
